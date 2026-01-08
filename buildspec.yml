@@ -1,0 +1,10 @@
+version: 0.2
+
+phases:
+  build:
+    commands:
+      # 1) Deploy everything to the bucket
+      - aws s3 sync . s3://csce412grahamd.me --delete --exclude ".git/*" --exclude "buildspec.yml"
+
+      # 2) Re-upload ALL html files with the correct Content-Type so browsers render them
+      - aws s3 cp . s3://csce412grahamd.me --recursive --exclude "*" --include "*.html" --content-type "text/html"
